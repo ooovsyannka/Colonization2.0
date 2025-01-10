@@ -3,31 +3,21 @@ using UnityEngine;
 
 public class TowerResourceHolder : MonoBehaviour
 {
-    [SerializeField] private Tower _tower;
+    private const int MaxCountResource = 3;
 
     private TowerData _data;
-    private Dictionary<Resource, bool> _resurces;
+    private Dictionary<Resource, bool> _resources;
 
     private void Awake()
     {
-        _resurces = new Dictionary<Resource, bool>();
-    }
-
-    private void OnEnable()
-    {
-        _tower.ResourceReceived += RemoveResource;
-    }
-
-    private void OnDisable()
-    {
-        _tower.ResourceReceived -= RemoveResource;
+        _resources = new Dictionary<Resource, bool>();
     }
 
     public void GetTowerData(TowerData data) => _data = data;
 
     public bool HasCurrentResource(Resource detectedResource)
     {
-        if (_resurces.ContainsKey(detectedResource))
+        if (_resources.ContainsKey(detectedResource))
             return true;
 
         return false;
@@ -35,11 +25,15 @@ public class TowerResourceHolder : MonoBehaviour
 
     public bool CanAddResurce(Resource detectedResource)
     {
-        if (_data.Test(detectedResource))
+        if (_resources.Count < MaxCountResource)
         {
-            _resurces.Add(detectedResource, false);
-            
-            return true;
+            if (_data.CanAddResource(detectedResource))
+            {
+                _resources.Add(detectedResource, false);
+                detectedResource.Died += RemoveResource;
+
+                return true;
+            }
         }
 
         return false;
@@ -49,14 +43,14 @@ public class TowerResourceHolder : MonoBehaviour
     {
         desiredResource = null;
 
-        if (_resurces.Count > 0)
+        if (_resources.Count > 0)
         {
-            foreach (KeyValuePair<Resource, bool> resource in _resurces)
+            foreach (KeyValuePair<Resource, bool> resource in _resources)
             {
                 if (resource.Value == false)
                 {
                     desiredResource = resource.Key;
-                    _resurces[desiredResource] = true;
+                    _resources[desiredResource] = true;
 
                     return true;
                 }
@@ -66,8 +60,8 @@ public class TowerResourceHolder : MonoBehaviour
         return false;
     }
 
-    private void RemoveResource(Resource resource)
+    private void RemoveResource(IPooledObject resource)
     {
-        _resurces.Remove(resource);
+        _resources.Remove((Resource)resource);
     }
 }

@@ -16,7 +16,7 @@ public class TowerData : MonoBehaviour
         resourceHolder.GetTowerData(this);
     }
 
-    public bool Test(Resource resource)
+    public bool CanAddResource(Resource resource)
     {
         foreach (TowerResourceHolder resourceHolder in _resourceHolders)
         {
