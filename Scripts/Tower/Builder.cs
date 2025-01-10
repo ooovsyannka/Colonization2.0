@@ -11,9 +11,8 @@ public class Builder : MonoBehaviour
     [SerializeField] private int _maxRayCastDistance;
 
     private TowerObject _towerObject;
-    private Tower _selectTower;
+    private Tower _selectedTower;
     private Coroutine _setFalgCoroutine;
-    private float _setFlagDelayTime = 0.05f;
     private bool _canSetFlag = true;
 
     private void Update()
@@ -29,22 +28,15 @@ public class Builder : MonoBehaviour
             {
                 if (hit.transform.TryGetComponent(out Tower tower))
                 {
-                    if (tower.UnitCount > 1)
-                    {
-                        _selectTower = tower;
-                        _towerObject = _selectTower.SetTowerObject();
+                    _selectedTower = tower;
+                    _towerObject = _selectedTower.SetTowerObject();
 
-                        if (_setFalgCoroutine != null)
-                        {
-                            StopCoroutine(_setFalgCoroutine);
-                        }
-
-                        StartCoroutine(SetFlag());
-                    }
-                    else
+                    if (_setFalgCoroutine != null)
                     {
-                        tower.ShowErrorMesange();
+                        StopCoroutine(_setFalgCoroutine);
                     }
+
+                    StartCoroutine(SetFlag());
                 }
             }
         }
@@ -54,7 +46,7 @@ public class Builder : MonoBehaviour
     {
         _canSetFlag = false;
         _towerObject.gameObject.SetActive(true);
-        _selectTower.UnitSendToNewTower -= GetUnit;
+        _selectedTower.UnitSendToNewTower -= SubscribeToUnitArrival;
 
         while (_canSetFlag == false)
         {
@@ -74,22 +66,22 @@ public class Builder : MonoBehaviour
             yield return null;
         }
 
-        _selectTower.ChangePriority();
-        _selectTower.UnitSendToNewTower += GetUnit;
+        _selectedTower.ChangePriority();
+        _selectedTower.UnitSendToNewTower += SubscribeToUnitArrival;
     }
 
-    private void CanBuildTower(Unit unit)
+    private void BuildTower(Unit unit)
     {
         _towerFabric.Spawn(_towerObject.transform.position);
         _towerObject.gameObject.SetActive(false);
         _towerObject.BackToInitialPosition();
-        unit.ArriveAtNewTower -= CanBuildTower;
+        unit.ArriveAtNewTower -= BuildTower;
     }
 
-    private void GetUnit(Unit unit)
+    private void SubscribeToUnitArrival(Unit unit)
     {
-        unit.ArriveAtNewTower += CanBuildTower;
-        _selectTower.UnitSendToNewTower -= GetUnit;
+        unit.ArriveAtNewTower += BuildTower;
+        _selectedTower.UnitSendToNewTower -= SubscribeToUnitArrival;
     }
 
     private bool CheckRayCollision(LayerMask mask, out RaycastHit hit)

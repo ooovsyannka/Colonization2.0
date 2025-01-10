@@ -1,5 +1,5 @@
 using System;
-using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Tower : MonoBehaviour, IFabricObject
@@ -12,10 +12,7 @@ public class Tower : MonoBehaviour, IFabricObject
     [SerializeField] private TowerObject _object;
     [SerializeField] private TowerInfo _info;
 
-    private bool _isBuildNewTower;
     private bool _canBuildNewTower;
-
-    public int UnitCount { get { return _unitHolder.IndexUnit; } }
 
     public event Action<Resource> ResourceReceived;
     public event Action<Unit> UnitSendToNewTower;
@@ -39,26 +36,17 @@ public class Tower : MonoBehaviour, IFabricObject
 
     public TowerObject SetTowerObject() => _object;
 
+    public TowerResourceHolder SetTowerResourceHolder() => _resourceHolder;
+
     public void ChangePriority()
     {
-        _isBuildNewTower = true;
-    }
-
-    public void GetErrorMessage(TextMeshProUGUI errorMessage)
-    {
-        _info.GetErrorMessage(errorMessage);
-    }
-
-    public void ShowErrorMesange()
-    {
-        _info.ShowErrorMessageLackUnit();
+        _buyer.OnFlagSet();
     }
 
     private void TryAddResurce(Resource detectedResource)
     {
         if (_resourceHolder.CanAddResurce(detectedResource))
         {
-            _resourceHolder.AddResurce(detectedResource);
             TrySendUnit();
         }
     }
@@ -98,7 +86,7 @@ public class Tower : MonoBehaviour, IFabricObject
             UnitSendToNewTower?.Invoke(unit);
             _unitHolder.FreeUpPlace(unit);
             unit.StartMoveToTower(_object);
-            _isBuildNewTower = false;
+            _buyer.OffFlagSet();
         }
     }
 
@@ -107,21 +95,18 @@ public class Tower : MonoBehaviour, IFabricObject
         ResourceReceived?.Invoke(resource);
         unit.ResourceUnloaded -= GetResource;
 
-        PurchasePriority();
+        SelectPriority();
     }
 
-    private void PurchasePriority()
+    private void SelectPriority()
     {
-        if (_isBuildNewTower == false)
+        if (_buyer.CanBuyNewTower())
         {
-            _buyer.TryBuyNewUnit();
+            _canBuildNewTower = true;
         }
         else
         {
-            if (_buyer.CanBuyNewTower())
-            {
-                _canBuildNewTower = true;
-            }
+            _buyer.TryBuyNewUnit();
         }
     }
 }

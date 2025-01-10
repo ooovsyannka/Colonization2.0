@@ -2,7 +2,6 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
-using static UnityEngine.GraphicsBuffer;
 
 [RequireComponent(typeof(NavMeshAgent))]
 
@@ -68,8 +67,7 @@ public class UnitMover : MonoBehaviour
         StopMove();
         IsMove = false;
 
-        if (arriveAt != null)
-            arriveAt?.Invoke();
+        arriveAt?.Invoke();
     }
 
     private void Move(Vector3 targetPosition)

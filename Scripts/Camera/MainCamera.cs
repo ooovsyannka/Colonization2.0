@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+[RequireComponent(typeof(CameraMover))]
 public class MainCamera : MonoBehaviour
 {
     [SerializeField] private InputReader _inputReader;

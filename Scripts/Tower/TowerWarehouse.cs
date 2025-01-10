@@ -1,6 +1,4 @@
-﻿using System;
-using TMPro;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class TowerWarehouse : MonoBehaviour
 {
@@ -26,15 +24,7 @@ public class TowerWarehouse : MonoBehaviour
         _resourceInfo.ResourceCountUpdate(_resurceCount);
     }
 
-    public bool CanBuy(int price)
-    {
-        if (_resurceCount >= price)
-        {
-            return true;
-        }
-
-        return false;
-    }
+    public bool CanBuy(int price) => _resurceCount >= price;
 
     private void AddResourceCount(Resource _)
     {

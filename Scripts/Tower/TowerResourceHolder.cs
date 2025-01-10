@@ -5,8 +5,8 @@ public class TowerResourceHolder : MonoBehaviour
 {
     [SerializeField] private Tower _tower;
 
+    private TowerData _data;
     private Dictionary<Resource, bool> _resurces;
-    private int _maxResourceCount = 3;
 
     private void Awake()
     {
@@ -23,25 +23,26 @@ public class TowerResourceHolder : MonoBehaviour
         _tower.ResourceReceived -= RemoveResource;
     }
 
-    public bool CanAddResurce(Resource detectedResource)
+    public void GetTowerData(TowerData data) => _data = data;
+
+    public bool HasCurrentResource(Resource detectedResource)
     {
-        if (_resurces.Count > _maxResourceCount)
-            return false;
-
-        if (detectedResource.IsDetect)
-            return false;
-
         if (_resurces.ContainsKey(detectedResource))
-            return false;
+            return true;
 
-        return true;
+        return false;
     }
 
-    public void AddResurce(Resource detectedResource)
+    public bool CanAddResurce(Resource detectedResource)
     {
-        detectedResource.Detect();
+        if (_data.Test(detectedResource))
+        {
+            _resurces.Add(detectedResource, false);
+            
+            return true;
+        }
 
-        _resurces.Add(detectedResource, false);
+        return false;
     }
 
     public bool TryGetFreeResurce(out Resource desiredResource)
@@ -61,7 +62,6 @@ public class TowerResourceHolder : MonoBehaviour
                 }
             }
         }
-
 
         return false;
     }

@@ -11,23 +11,11 @@ public class Resource : MonoBehaviour, IPooledObject
     private Coroutine _dieDelay;
     private WaitForSeconds _dieDelayWait;
 
-    public bool IsDetect { get; private set; }
-
     public event Action<IPooledObject> Died;
 
     private void Awake()
     {
         _dieDelayWait = new WaitForSeconds(_timeToDie);
-    }
-
-    private void OnEnable()
-    {
-        IsDetect = false;
-    }
-
-    public void Detect()
-    {
-        IsDetect = true;
     }
 
     public void Die()

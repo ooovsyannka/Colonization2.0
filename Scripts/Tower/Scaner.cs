@@ -33,10 +33,7 @@ public class Scaner : MonoBehaviour
             {
                 if (collider.gameObject.TryGetComponent(out Resource resource))
                 {
-                    if (resource.IsDetect == false)
-                    {
-                        ResourceDetected?.Invoke(resource);
-                    }
+                    ResourceDetected?.Invoke(resource);
                 }
             }
 

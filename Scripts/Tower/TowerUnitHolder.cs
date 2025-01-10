@@ -10,7 +10,7 @@ public class TowerUnitHolder : MonoBehaviour
     private Queue<Unit> _activeUnits;
     private Dictionary<Transform, bool> _unitPlaces;
 
-    public int IndexUnit { get; private set; }
+    public int UnitCount {get; private set; }
     public bool HasActiveUnits { get { return _activeUnits.Count != 0; } }
 
     public event Action UnitReturned;
@@ -40,7 +40,7 @@ public class TowerUnitHolder : MonoBehaviour
                 if (mover.BasePosition == place.Key.position)
                 {
                     _unitPlaces[place.Key] = false;
-                    IndexUnit--;
+                    UnitCount--;
 
                     return;
                 }
@@ -62,7 +62,7 @@ public class TowerUnitHolder : MonoBehaviour
                 Unit unit = _unitFabric.Spawn(place.Key.position, null);
                 _unitPlaces[place.Key] = true;
                 _activeUnits.Enqueue(unit);
-                IndexUnit++;
+                UnitCount++;
 
                 return;
             }
@@ -71,9 +71,10 @@ public class TowerUnitHolder : MonoBehaviour
 
     public bool CanAddNewUnit()
     {
-        if (IndexUnit < _desiredPlaces.Count)
+        foreach (KeyValuePair<Transform, bool> place in _unitPlaces)
         {
-            return true;
+            if (place.Value == false)
+                return true;
         }
 
         return false;
