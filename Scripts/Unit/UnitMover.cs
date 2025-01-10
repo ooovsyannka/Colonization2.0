@@ -12,8 +12,6 @@ public class UnitMover : MonoBehaviour
     private NavMeshAgent _agent;
     private Coroutine _moveTo;
 
-    public Transform CurrentTarget;
-
     public Vector3 BasePosition { get; private set; }
     public bool IsMove { get; private set; }
 
@@ -32,7 +30,6 @@ public class UnitMover : MonoBehaviour
 
     public Coroutine MoveToResurce(Resource resource)
     {
-        CurrentTarget = resource.transform;
         return StartMoveTo(resource.transform.position, ArriveAtResurce);
     }
 
@@ -43,7 +40,6 @@ public class UnitMover : MonoBehaviour
 
     public Coroutine MoveToNewTower(TowerObject tower)
     {
-        CurrentTarget = tower.transform;
         return StartMoveTo(tower.transform.position);
     }
 

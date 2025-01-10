@@ -42,18 +42,28 @@ public class ResurceSpawner : MonoBehaviour
 
     private Vector3 GetNewSpawnPosition()
     {
-        Vector3 newSpawnPosition = new Vector3(GetRandomNumber(), 0, GetRandomNumber());
+        Vector3 newSpawnPosition = Vector3.zero;
+        bool isGround = false;
 
-        SetPositionY(ref newSpawnPosition);
+        while (isGround == false)
+        {
+            newSpawnPosition = new Vector3(GetRandomNumber(), 0, GetRandomNumber());
+
+            SetPositionY(ref newSpawnPosition, out isGround);
+        }
+
         return newSpawnPosition;
     }
 
-    private void SetPositionY(ref Vector3 newSpawnPosition)
+    private void SetPositionY(ref Vector3 newSpawnPosition, out bool isGround)
     {
+        isGround = false;
+
         if (Physics.Raycast(newSpawnPosition + Vector3.up * _maxRayCastDistance, Vector3.down, out RaycastHit hit, _maxRayCastDistance))
         {
             if (hit.collider.TryGetComponent<Ground>(out _))
             {
+                isGround = true;
                 newSpawnPosition.y = hit.point.y;
             }
         }
