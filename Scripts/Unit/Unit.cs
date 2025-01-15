@@ -30,12 +30,12 @@ public class Unit : MonoBehaviour, IFabricObject
         StartCoroutine(DeliveryResource(resource));
     }
 
-    public void StartMoveToTower(TowerObject tower)
+    public void StartMoveToTower(TowerFlag tower)
     {
         StartCoroutine(MoveToTower(tower));
     }
 
-    private IEnumerator MoveToTower(TowerObject tower)
+    private IEnumerator MoveToTower(TowerFlag tower)
     {
         yield return _mover.MoveToNewTower(tower);
 

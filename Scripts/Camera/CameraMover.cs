@@ -19,10 +19,10 @@ public class CameraMover : MonoBehaviour
         _screenCenter = new Vector2(_screenWidthCenter, _screenHeightCenter);
     }
 
-    public void Move(InputReader inputReader)
+    public void Move(Vector3 mousePosition)
     {
-        float horizontalDistance = inputReader.MousePosition.x - _screenCenter.x;
-        float verticalDistance = inputReader.MousePosition.y - _screenCenter.y;
+        float horizontalDistance = mousePosition.x - _screenCenter.x;
+        float verticalDistance = mousePosition.y - _screenCenter.y;
 
         _moveDirection.x = Mathf.Abs(horizontalDistance) >= _screenWidthCenter - _borderScreen ? Mathf.Sign(horizontalDistance) : 0;
         _moveDirection.z = Mathf.Abs(verticalDistance) >= _screenHeightCenter - _borderScreen ? Mathf.Sign(verticalDistance) : 0;

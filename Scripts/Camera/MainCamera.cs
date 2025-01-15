@@ -15,6 +15,6 @@ public class MainCamera : MonoBehaviour
 
     private void Update()
     {
-        _mover.Move(_inputReader);
+        _mover.Move(_inputReader.MousePosition);
     }
 }

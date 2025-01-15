@@ -1,8 +1,17 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
-public class InputReader : MonoBehaviour 
+public class InputReader : MonoBehaviour
 {
-    public bool IsRightMouseButton { get { return Input.GetMouseButtonUp(1); } }
-    public bool IsLeftMouseButton { get { return Input.GetMouseButtonUp(0); } }
-    public Vector3 MousePosition { get { return Input.mousePosition; } }
+    public Vector3 MousePosition { get; private set; }
+
+    public event Action LeftMouseButtonClicked;
+
+    private void Update()
+    {
+        if (Input.GetMouseButtonUp(0))
+            LeftMouseButtonClicked();
+
+        MousePosition = Input.mousePosition;
+    }
 }

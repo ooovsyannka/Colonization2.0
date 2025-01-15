@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Scaner : MonoBehaviour
@@ -10,11 +11,13 @@ public class Scaner : MonoBehaviour
     [SerializeField] private float _scanDelay;
 
     private WaitForSeconds _scanWait;
+    private List<Resource> _detectedResources;
 
-    public event Action<Resource> ResourceDetected;
+    public event Action<List<Resource>> ResourceDetected;
 
     private void Awake()
     {
+        _detectedResources = new List<Resource>();
         _scanWait = new WaitForSeconds(_scanDelay);
     }
 
@@ -33,9 +36,12 @@ public class Scaner : MonoBehaviour
             {
                 if (collider.gameObject.TryGetComponent(out Resource resource))
                 {
-                    ResourceDetected?.Invoke(resource);
+                    _detectedResources.Add(resource);
                 }
             }
+
+            ResourceDetected?.Invoke(_detectedResources);
+            _detectedResources.Clear();
 
             yield return _scanWait;
         }

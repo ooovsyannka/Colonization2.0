@@ -15,13 +15,7 @@ public class TowerResourceHolder : MonoBehaviour
 
     public void GetTowerData(TowerData data) => _data = data;
 
-    public bool HasCurrentResource(Resource detectedResource)
-    {
-        if (_resources.ContainsKey(detectedResource))
-            return true;
-
-        return false;
-    }
+    public bool HasCurrentResource(Resource detectedResource) => _resources.ContainsKey(detectedResource);
 
     public bool CanAddResurce(Resource detectedResource)
     {

@@ -302,6 +302,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Prefab>k__BackingField: {fileID: 7666501512724836583, guid: 4840186a091ce8d46aaa0b99ca059622, type: 3}
+  _inputReader: {fileID: 266718939}
   _unitFabric: {fileID: 1253399546}
   _towerData: {fileID: 650550363}
   _startSpawnPosition: {x: 15, y: 5, z: -90}
@@ -761,7 +762,6 @@ MonoBehaviour:
   _groundLayer:
     serializedVersion: 2
     m_Bits: 128
-  _maxRayCastDistance: 500
 --- !u!4 &1280675924
 Transform:
   m_ObjectHideFlags: 0
@@ -891,7 +891,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81c9f4130aeef0649bb306fd71d6253a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 0
+  _speed: 20
   _borderScreen: 50
 --- !u!114 &2084263148
 MonoBehaviour:

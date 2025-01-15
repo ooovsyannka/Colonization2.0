@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Builder : MonoBehaviour
 {
@@ -8,73 +7,57 @@ public class Builder : MonoBehaviour
     [SerializeField] private Camera _camera;
     [SerializeField] private LayerMask _towerLayer;
     [SerializeField] private LayerMask _groundLayer;
-    [SerializeField] private int _maxRayCastDistance;
 
-    private TowerObject _towerObject;
+    private TowerFlag _towerFlag;
     private Tower _selectedTower;
-    private Coroutine _setFalgCoroutine;
-    private bool _canSetFlag = true;
 
-    private void Update()
+    private void OnEnable()
     {
-        TryGetTower();
+        _inputReader.LeftMouseButtonClicked += TryGetTower;
+    }
+
+    private void OnDisable()
+    {
+        _inputReader.LeftMouseButtonClicked -= SetFlag;
+        _inputReader.LeftMouseButtonClicked -= TryGetTower;
     }
 
     private void TryGetTower()
     {
-        if (_inputReader.IsLeftMouseButton && _canSetFlag == true)
+        if (LayerCollision.IsDesiredLayerCollision(_inputReader, _towerLayer, out RaycastHit hit))
         {
-            if (CheckRayCollision(_towerLayer, out RaycastHit hit))
+            if (hit.transform.TryGetComponent(out Tower tower))
             {
-                if (hit.transform.TryGetComponent(out Tower tower))
-                {
-                    _selectedTower = tower;
-                    _towerObject = _selectedTower.SetTowerObject();
+                _selectedTower = tower;
+                _towerFlag = _selectedTower.SetTowerFlag();
+                _towerFlag.gameObject.SetActive(true);
+                _towerFlag.StartMove();
 
-                    if (_setFalgCoroutine != null)
-                    {
-                        StopCoroutine(_setFalgCoroutine);
-                    }
-
-                    StartCoroutine(SetFlag());
-                }
+                _inputReader.LeftMouseButtonClicked -= TryGetTower;
+                _inputReader.LeftMouseButtonClicked += SetFlag;
             }
         }
     }
 
-    private IEnumerator SetFlag()
+    private void SetFlag()
     {
-        _canSetFlag = false;
-        _towerObject.gameObject.SetActive(true);
-        _selectedTower.UnitSendToNewTower -= SubscribeToUnitArrival;
-
-        while (_canSetFlag == false)
+        if (_towerFlag.CanBuild)
         {
-            if (_inputReader.IsLeftMouseButton)
-            {
-                if (_towerObject.CanBuild)
-                {
-                    _canSetFlag = true;
-                }
-            }
+            _selectedTower.ChangePriority();
+            _selectedTower.UnitSendToNewTower -= SubscribeToUnitArrival;
+            _selectedTower.UnitSendToNewTower += SubscribeToUnitArrival;
+            _towerFlag.StopMove();
 
-            if (CheckRayCollision(_groundLayer, out RaycastHit hit))
-            {
-                _towerObject.transform.position = hit.point;
-            }
-
-            yield return null;
+            _inputReader.LeftMouseButtonClicked -= SetFlag;
+            _inputReader.LeftMouseButtonClicked += TryGetTower;
         }
-
-        _selectedTower.ChangePriority();
-        _selectedTower.UnitSendToNewTower += SubscribeToUnitArrival;
     }
 
     private void BuildTower(Unit unit)
     {
-        _towerFabric.Spawn(_towerObject.transform.position);
-        _towerObject.gameObject.SetActive(false);
-        _towerObject.BackToInitialPosition();
+        _towerFabric.Spawn(_towerFlag.transform.position);
+        _towerFlag.gameObject.SetActive(false);
+        _towerFlag.BackToInitialPosition();
         unit.ArriveAtNewTower -= BuildTower;
     }
 
@@ -82,12 +65,5 @@ public class Builder : MonoBehaviour
     {
         unit.ArriveAtNewTower += BuildTower;
         _selectedTower.UnitSendToNewTower -= SubscribeToUnitArrival;
-    }
-
-    private bool CheckRayCollision(LayerMask mask, out RaycastHit hit)
-    {
-        Ray ray = _camera.ScreenPointToRay(_inputReader.MousePosition);
-
-        return Physics.Raycast(ray, out hit, _maxRayCastDistance, mask);
     }
 }

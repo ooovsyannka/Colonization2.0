@@ -12,11 +12,11 @@ public class UnitMover : MonoBehaviour
     private NavMeshAgent _agent;
     private Coroutine _moveTo;
 
-    public Vector3 BasePosition { get; private set; }
-    public bool IsMove { get; private set; }
-
     public event Action ArriveAtResurce;
     public event Action ArriveAtTower;
+
+    public Vector3 BasePosition { get; private set; }
+    public bool IsMove { get; private set; }
 
     private void Awake()
     {
@@ -38,7 +38,7 @@ public class UnitMover : MonoBehaviour
         return StartMoveTo(BasePosition, ArriveAtTower);
     }
 
-    public Coroutine MoveToNewTower(TowerObject tower)
+    public Coroutine MoveToNewTower(TowerFlag tower)
     {
         return StartMoveTo(tower.transform.position);
     }

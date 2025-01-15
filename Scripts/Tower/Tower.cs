@@ -1,5 +1,5 @@
 using System;
-using Unity.VisualScripting;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Tower : MonoBehaviour, IFabricObject
@@ -9,7 +9,7 @@ public class Tower : MonoBehaviour, IFabricObject
     [SerializeField] private TowerResourceHolder _resourceHolder;
     [SerializeField] private TowerWarehouse _warehouse;
     [SerializeField] private TowerBuyer _buyer;
-    [SerializeField] private TowerObject _object;
+    [SerializeField] private TowerFlag _flag;
     [SerializeField] private TowerInfo _info;
 
     private bool _canBuildNewTower;
@@ -34,7 +34,7 @@ public class Tower : MonoBehaviour, IFabricObject
         _unitHolder.GetUnitFabric(unitFabric);
     }
 
-    public TowerObject SetTowerObject() => _object;
+    public TowerFlag SetTowerFlag() => _flag;
 
     public TowerResourceHolder SetTowerResourceHolder() => _resourceHolder;
 
@@ -43,11 +43,14 @@ public class Tower : MonoBehaviour, IFabricObject
         _buyer.OnFlagSet();
     }
 
-    private void TryAddResurce(Resource detectedResource)
+    private void TryAddResurce(List<Resource> detectedResource)
     {
-        if (_resourceHolder.CanAddResurce(detectedResource))
+        foreach (Resource resource in detectedResource)
         {
-            TrySendUnit();
+            if (_resourceHolder.CanAddResurce(resource))
+            {
+                TrySendUnit();
+            }
         }
     }
 
@@ -85,7 +88,7 @@ public class Tower : MonoBehaviour, IFabricObject
             _canBuildNewTower = false;
             UnitSendToNewTower?.Invoke(unit);
             _unitHolder.FreeUpPlace(unit);
-            unit.StartMoveToTower(_object);
+            unit.StartMoveToTower(_flag);
             _buyer.OffFlagSet();
         }
     }
