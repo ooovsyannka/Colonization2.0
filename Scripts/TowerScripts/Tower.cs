@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Tower : MonoBehaviour, IFabricObject
+public class Tower : MonoBehaviour, IFactoryObject
 {
     [SerializeField] private Scaner _scaner;
     [SerializeField] private TowerUnitHolder _unitHolder;
@@ -31,7 +31,7 @@ public class Tower : MonoBehaviour, IFabricObject
 
     public void GetUnitFabric(UnitFabric unitFabric)
     {
-        _unitHolder.GetUnitFabric(unitFabric);
+        _unitHolder.SetUnitFabric(unitFabric);
     }
 
     public TowerFlag SetTowerFlag() => _flag;

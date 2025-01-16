@@ -13,7 +13,7 @@ public class TowerData : MonoBehaviour
     public void AddTowerResourceHolder(TowerResourceHolder resourceHolder)
     {
         _resourceHolders.Add(resourceHolder);
-        resourceHolder.GetTowerData(this);
+        resourceHolder.SetTowerData(this);
     }
 
     public bool CanAddResource(Resource resource)

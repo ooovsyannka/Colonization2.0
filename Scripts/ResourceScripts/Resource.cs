@@ -4,14 +4,14 @@ using UnityEngine;
 
 [RequireComponent(typeof(Collider), typeof(Rigidbody))]
 
-public class Resource : MonoBehaviour, IPooledObject
+public class Resource : MonoBehaviour, IPoolableObject
 {
     [SerializeField] private float _timeToDie;
 
     private Coroutine _dieDelay;
     private WaitForSeconds _dieDelayWait;
 
-    public event Action<IPooledObject> Died;
+    public event Action<IPoolableObject> Died;
 
     private void Awake()
     {

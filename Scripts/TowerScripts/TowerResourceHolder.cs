@@ -13,9 +13,11 @@ public class TowerResourceHolder : MonoBehaviour
         _resources = new Dictionary<Resource, bool>();
     }
 
-    public void GetTowerData(TowerData data) => _data = data;
+    public void SetTowerData(TowerData data) => 
+        _data = data;
 
-    public bool HasCurrentResource(Resource detectedResource) => _resources.ContainsKey(detectedResource);
+    public bool HasCurrentResource(Resource detectedResource) => 
+        _resources.ContainsKey(detectedResource);
 
     public bool CanAddResurce(Resource detectedResource)
     {
@@ -54,7 +56,7 @@ public class TowerResourceHolder : MonoBehaviour
         return false;
     }
 
-    private void RemoveResource(IPooledObject resource)
+    private void RemoveResource(IPoolableObject resource)
     {
         _resources.Remove((Resource)resource);
     }

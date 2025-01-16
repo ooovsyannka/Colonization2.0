@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class UnitFabric : Fabric<Unit>
+public class UnitFabric : Factory<Unit>
 {
     public override Unit Spawn(Vector3 spawnPosition, Transform parent)
     {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class Spawner<T> where T : MonoBehaviour, IPooledObject
+public class Spawner<T> where T : MonoBehaviour, IPoolableObject
 {
     private ObjectPool<T> _pool;
     private List<T> _activeObjects = new List<T>();
@@ -35,7 +35,7 @@ public class Spawner<T> where T : MonoBehaviour, IPooledObject
         }
     }
 
-    private void ReturnObjectInPool(IPooledObject returnedObject)
+    private void ReturnObjectInPool(IPoolableObject returnedObject)
     {
         _activeObjects.Remove((T)returnedObject);
         _pool.PutObject((T)returnedObject);

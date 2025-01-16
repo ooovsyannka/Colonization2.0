@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class TowerFabric : Fabric<Tower>
+public class TowerFabric : Factory<Tower>
 {
     [SerializeField] private InputReader _inputReader;
     [SerializeField] private UnitFabric _unitFabric;
@@ -21,7 +21,7 @@ public class TowerFabric : Fabric<Tower>
         _towerData.AddTowerResourceHolder(tower.SetTowerResourceHolder());
 
         if (tower.SetTowerFlag().TryGetComponent(out TowerFlagMover mover))
-            mover.GetInputReader(_inputReader);
+            mover.SetInputReader(_inputReader);
 
         return tower;
     }

@@ -8,7 +8,8 @@ public class TowerFlagMover : MonoBehaviour
     private InputReader _reader;
     private Coroutine _move;
 
-    public void GetInputReader(InputReader reader) => _reader = reader;
+    public void SetInputReader(InputReader reader) => 
+        _reader = reader;
 
     public void StartMove()
     {

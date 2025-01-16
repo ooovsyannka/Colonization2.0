@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public abstract class Fabric<T> : MonoBehaviour where T : MonoBehaviour, IFabricObject
+public abstract class Factory<T> : MonoBehaviour where T : MonoBehaviour, IFactoryObject
 {
     [field : SerializeField] public T Prefab{ get; private set; }
 

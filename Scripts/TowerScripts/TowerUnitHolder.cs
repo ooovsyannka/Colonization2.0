@@ -48,10 +48,8 @@ public class TowerUnitHolder : MonoBehaviour
         }
     }
 
-    public void GetUnitFabric(UnitFabric unitFabric)
-    {
+    public void SetUnitFabric(UnitFabric unitFabric)=>
         _unitFabric = unitFabric;
-    }
 
     public void AddNewUnit()
     {

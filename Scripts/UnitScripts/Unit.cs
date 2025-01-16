@@ -4,7 +4,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(UnitMover))]
 
-public class Unit : MonoBehaviour, IFabricObject
+public class Unit : MonoBehaviour, IFactoryObject
 {
     [SerializeField] private UnitTrailer _trailer;
     [SerializeField] private UnitAnimation _animation;
