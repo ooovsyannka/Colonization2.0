@@ -23,10 +23,10 @@ public class Scaner : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(Scanning());
+        StartCoroutine(StartScanning());
     }
 
-    private IEnumerator Scanning()
+    private IEnumerator StartScanning()
     {
         while (enabled)
         {

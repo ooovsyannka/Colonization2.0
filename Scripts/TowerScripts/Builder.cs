@@ -3,7 +3,7 @@
 public class Builder : MonoBehaviour
 {
     [SerializeField] private InputReader _inputReader;
-    [SerializeField] private TowerFabric _towerFabric;
+    [SerializeField] private TowerFactory _towerFabric;
     [SerializeField] private Camera _camera;
     [SerializeField] private LayerMask _towerLayer;
     [SerializeField] private LayerMask _groundLayer;
@@ -13,16 +13,16 @@ public class Builder : MonoBehaviour
 
     private void OnEnable()
     {
-        _inputReader.LeftMouseButtonClicked += TryGetTower;
+        _inputReader.LeftMouseButtonClicked += SelectTower;
     }
 
     private void OnDisable()
     {
-        _inputReader.LeftMouseButtonClicked -= SetFlag;
-        _inputReader.LeftMouseButtonClicked -= TryGetTower;
+        _inputReader.LeftMouseButtonClicked -= CompleteTowerPlacement;
+        _inputReader.LeftMouseButtonClicked -= SelectTower;
     }
 
-    private void TryGetTower()
+    private void SelectTower()
     {
         if (LayerCollision.IsDesiredLayerCollision(_inputReader, _towerLayer, out RaycastHit hit))
         {
@@ -33,13 +33,13 @@ public class Builder : MonoBehaviour
                 _towerFlag.gameObject.SetActive(true);
                 _towerFlag.StartMove();
 
-                _inputReader.LeftMouseButtonClicked -= TryGetTower;
-                _inputReader.LeftMouseButtonClicked += SetFlag;
+                _inputReader.LeftMouseButtonClicked -= SelectTower;
+                _inputReader.LeftMouseButtonClicked += CompleteTowerPlacement;
             }
         }
     }
 
-    private void SetFlag()
+    private void CompleteTowerPlacement()
     {
         if (_towerFlag.CanBuild)
         {
@@ -48,8 +48,8 @@ public class Builder : MonoBehaviour
             _selectedTower.UnitSendToNewTower += SubscribeToUnitArrival;
             _towerFlag.StopMove();
 
-            _inputReader.LeftMouseButtonClicked -= SetFlag;
-            _inputReader.LeftMouseButtonClicked += TryGetTower;
+            _inputReader.LeftMouseButtonClicked -= CompleteTowerPlacement;
+            _inputReader.LeftMouseButtonClicked += SelectTower;
         }
     }
 

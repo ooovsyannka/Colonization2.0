@@ -24,7 +24,8 @@ public class TowerWarehouse : MonoBehaviour
         _resourceInfo.ResourceCountUpdate(_resurceCount);
     }
 
-    public bool CanBuy(int price) => _resurceCount >= price;
+    public bool CanBuy(int price) =>
+        _resurceCount >= price;
 
     private void AddResourceCount(Resource _)
     {

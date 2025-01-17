@@ -46,8 +46,10 @@ public class TowerFlag : MonoBehaviour
     {
         _initialPosition = transform.position;
     }
-    
-    public void StartMove() =>_mover.StartMove();
 
-    public void StopMove()=> _mover.StopMove();
+    public void StartMove() =>
+        _mover.StartMove();
+
+    public void StopMove() =>
+        _mover.StopMove();
 }

@@ -6,12 +6,18 @@ public class TowerUnitHolder : MonoBehaviour
 {
     [SerializeField] private List<Transform> _desiredPlaces;
 
-    private UnitFabric _unitFabric;
+    private UnitFactory _unitFabric;
     private Queue<Unit> _activeUnits;
     private Dictionary<Transform, bool> _unitPlaces;
 
-    public int UnitCount {get; private set; }
-    public bool HasActiveUnits { get { return _activeUnits.Count != 0; } }
+    public int UnitCount { get; private set; }
+    public bool HasActiveUnits
+    {
+        get
+        {
+            return _activeUnits.Count != 0;
+        }
+    }
 
     public event Action UnitReturned;
 
@@ -48,7 +54,7 @@ public class TowerUnitHolder : MonoBehaviour
         }
     }
 
-    public void SetUnitFabric(UnitFabric unitFabric)=>
+    public void SetUnitFabric(UnitFactory unitFabric) =>
         _unitFabric = unitFabric;
 
     public void AddNewUnit()

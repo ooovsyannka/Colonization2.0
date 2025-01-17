@@ -29,14 +29,14 @@ public class Tower : MonoBehaviour, IFactoryObject
         _unitHolder.UnitReturned -= TrySendUnit;
     }
 
-    public void GetUnitFabric(UnitFabric unitFabric)
-    {
+    public void SetUnitFactory(UnitFactory unitFabric)=>
         _unitHolder.SetUnitFabric(unitFabric);
-    }
 
-    public TowerFlag SetTowerFlag() => _flag;
+    public TowerFlag SetTowerFlag() => 
+        _flag;
 
-    public TowerResourceHolder SetTowerResourceHolder() => _resourceHolder;
+    public TowerResourceHolder SetTowerResourceHolder() => 
+        _resourceHolder;
 
     public void ChangePriority()
     {
@@ -103,13 +103,13 @@ public class Tower : MonoBehaviour, IFactoryObject
 
     private void SelectPriority()
     {
-        if (_buyer.CanBuyNewTower())
+        if (_buyer.CanBuyTower())
         {
             _canBuildNewTower = true;
         }
         else
         {
-            _buyer.TryBuyNewUnit();
+            _buyer.AttemptPurchaseUnit();
         }
     }
 }

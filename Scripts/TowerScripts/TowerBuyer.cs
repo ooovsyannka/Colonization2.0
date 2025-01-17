@@ -12,7 +12,7 @@ public class TowerBuyer : MonoBehaviour
     private int _unitPrice = 3;
     private int _towerPrice = 5;
 
-    public void TryBuyNewUnit()
+    public void AttemptPurchaseUnit()
     {
         if (_isTowerPriority == false)
         {
@@ -27,7 +27,7 @@ public class TowerBuyer : MonoBehaviour
         }
     }
 
-    public bool CanBuyNewTower()
+    public bool CanBuyTower()
     {
         if (_unitHolder.UnitCount > AllowedNumberUnit)
         {

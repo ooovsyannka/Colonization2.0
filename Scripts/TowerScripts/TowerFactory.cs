@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 
-public class TowerFabric : Factory<Tower>
+public class TowerFactory : Factory<Tower>
 {
     [SerializeField] private InputReader _inputReader;
-    [SerializeField] private UnitFabric _unitFabric;
+    [SerializeField] private UnitFactory _unitFabric;
     [SerializeField] private TowerData _towerData;
     [SerializeField] private Vector3 _startSpawnPosition;
 
@@ -17,7 +17,7 @@ public class TowerFabric : Factory<Tower>
     public override Tower Spawn(Vector3 spawnPosition, Transform parent = null)
     {
         Tower tower = Instantiate(Prefab, spawnPosition, Quaternion.Euler(Vector3.up * _towerRotation));
-        tower.GetUnitFabric(_unitFabric);
+        tower.SetUnitFactory(_unitFabric);
         _towerData.AddTowerResourceHolder(tower.SetTowerResourceHolder());
 
         if (tower.SetTowerFlag().TryGetComponent(out TowerFlagMover mover))
