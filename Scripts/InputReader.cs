@@ -3,14 +3,14 @@ using UnityEngine;
 
 public class InputReader : MonoBehaviour
 {
-    public Vector3 MousePosition { get; private set; }
+    public event Action TrySelectedTower;
 
-    public event Action LeftMouseButtonClicked;
+    public Vector3 MousePosition { get; private set; }
 
     private void Update()
     {
         if (Input.GetMouseButtonUp(0))
-            LeftMouseButtonClicked();
+            TrySelectedTower();
 
         MousePosition = Input.mousePosition;
     }

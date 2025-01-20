@@ -1,14 +1,23 @@
 ﻿using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(LayerCollision))]
+
 public class TowerFlagMover : MonoBehaviour
 {
     [SerializeField] private LayerMask _groundLayer;
 
+    private int _maxRayCastDistance = 500;
+    private LayerCollision _layerCollision;
     private InputReader _reader;
     private Coroutine _move;
 
-    public void SetInputReader(InputReader reader) => 
+    private void Awake()
+    {
+        _layerCollision = GetComponent<LayerCollision>();
+    }
+
+    public void SetInputReader(InputReader reader) =>
         _reader = reader;
 
     public void StartMove()
@@ -32,7 +41,7 @@ public class TowerFlagMover : MonoBehaviour
         {
             if (_reader != null)
             {
-                if (LayerCollision.IsDesiredLayerCollision(_reader, _groundLayer, out RaycastHit hit))
+                if (_layerCollision.IsDesiredLayerCollision(_reader, _maxRayCastDistance, _groundLayer, out RaycastHit hit))
                 {
                     transform.position = hit.point;
                 }

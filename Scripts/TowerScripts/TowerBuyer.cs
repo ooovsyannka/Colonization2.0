@@ -48,7 +48,9 @@ public class TowerBuyer : MonoBehaviour
         return false;
     }
 
-    public void OnFlagSet() => _isFlagSet = true;
+    public void ActivateFlag() => 
+        _isFlagSet = true;
 
-    public void OffFlagSet() => _isFlagSet = false;
+    public void DeactivateFlag() => 
+        _isFlagSet = false;
 }

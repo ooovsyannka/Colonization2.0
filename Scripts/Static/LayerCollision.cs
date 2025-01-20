@@ -1,14 +1,19 @@
 ﻿using UnityEngine;
 
-public static class LayerCollision
+public class LayerCollision : MonoBehaviour
 {
-    private static int _maxRayCastDistance = 150;
+    private Camera _mainCamera;
 
-    public static bool IsDesiredLayerCollision(InputReader inputReader,LayerMask mask, out RaycastHit hit)
+    private void Awake()
     {
-        Ray ray = Camera.main.ScreenPointToRay(inputReader.MousePosition);
+        _mainCamera = Camera.main;
+    }
 
-        return Physics.Raycast(ray, out hit, _maxRayCastDistance, mask);
+    public bool IsDesiredLayerCollision(InputReader inputReader, int maxRayCastDistance, LayerMask mask, out RaycastHit hit)
+    {
+        Ray ray = _mainCamera.ScreenPointToRay(inputReader.MousePosition);
+
+        return Physics.Raycast(ray, out hit, maxRayCastDistance, mask);
     }
 
 }

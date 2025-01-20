@@ -40,7 +40,7 @@ public class Tower : MonoBehaviour, IFactoryObject
 
     public void ChangePriority()
     {
-        _buyer.OnFlagSet();
+        _buyer.ActivateFlag();
     }
 
     private void TryAddResurce(List<Resource> detectedResource)
@@ -89,7 +89,7 @@ public class Tower : MonoBehaviour, IFactoryObject
             UnitSendToNewTower?.Invoke(unit);
             _unitHolder.FreeUpPlace(unit);
             unit.StartMoveToTower(_flag);
-            _buyer.OffFlagSet();
+            _buyer.DeactivateFlag();
         }
     }
 
